@@ -11,12 +11,28 @@ public class Main {
 	 */
 	public static void main(String[] args) {
 		//Student creates his own information
+		Student student = new Student("Gaurav", 1, 1, 2, "E&EC" );
 		//Student creates a timetable
+		TimeTable timeTable = new TimeTable();
 		//Student creates a study week schedule
-		//Student specify study period (start date and end date), (start date, end date)
-		//student creates exam week schedule, start and end date
+		WeekSchedule weekSchedule = new WeekSchedule();
+		DaySchedule daySchedule = new DaySchedule();
+		daySchedule.addTimeSlot(1, new TimeSlot(1, new Subject()));
+		//more timeslots to be added for this day
+		
+		// add schedule for Monday
+		weekSchedule.addDaySchedule(1, daySchedule);
+		// add schedule for other days
+		timeTable.addWeekSchedule(1, weekSchedule);
+		// add week schedule for all the days by cloning them;
+		
 		//Student specify holiday period
-		//
+		timeTable.addHoliday(2 /* week */, 5 /* day */);
+		timeTable.addHolidays(2 /* start week */, 5 /* start day */, 3 /* end week */, 2 /* end day */);
+
+		//student creates exam week schedule, start and end date
+		ExamWeekSchedule examWeekSchedule = new ExamWeekSchedule();
+		timeTable.addExamWeekSchedule(3/*week number*/, examWeekSchedule);
 		
 		if(Main.testTime())
 			System.out.println("Test for class Time: Passed");
@@ -49,7 +65,7 @@ public class Main {
 
 	/* Class: TimeSlot */
 	public static boolean testTimeSlot() {
-		TimeSlot ts = new TimeSlot(new Subject(), new Time(8,0), 40);		
+//		TimeSlot ts = new TimeSlot(new Subject(), new Time(8,0), 40);		
 		return false;
 	}
 }

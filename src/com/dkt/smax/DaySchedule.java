@@ -19,4 +19,7 @@ public class DaySchedule {
 	public DaySchedule() {
 		this.tod = DaySchedule.enumTypeOfDay.STUDYDAY;
 	}
+	public boolean addTimeSlot(int tsn, TimeSlot ts) {
+		return true;
+	}
 }
