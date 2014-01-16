@@ -10,7 +10,14 @@ public class Main {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+		//Student creates his own information
+		//Student creates a timetable
+		//Student creates a study week schedule
+		//Student specify study period (start date and end date), (start date, end date)
+		//student creates exam week schedule, start and end date
+		//Student specify holiday period
+		//
+		
 		if(Main.testTime())
 			System.out.println("Test for class Time: Passed");
 		else
