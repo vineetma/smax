@@ -2,6 +2,8 @@ package com.dkt.smax;
 
 import java.util.List;
 
+import com.sun.org.apache.xpath.internal.operations.Bool;
+
 public class DaySchedule {
 	enum enumTypeOfDay {HOLIDAY, STUDYDAY};
 	enum enumDayName {MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY};
@@ -29,6 +31,9 @@ public class DaySchedule {
 	public DaySchedule(enumDayName dn, enumTypeOfDay td){
 		this.dayName =dn;
 		this.tod = td;
+	}
+	public boolean addTimeSlot(TimeSlot ts){
+		return true;
 	}
 }
 
