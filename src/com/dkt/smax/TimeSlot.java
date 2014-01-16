@@ -4,14 +4,12 @@ public class TimeSlot {
 	Subject subject; // one of the subjects is recess
 	Teacher teacher;
 	int room;
-	int duration; // in minutes
-	Time startTime;
+	int timeSlotNumber;
 	public enum SlotTypes {SUBJECT, RECESS, PERSONAL_SHORT, PERSONAL_LONG}
-	public TimeSlot(Subject subject, Time startTime, int duration) {
+	public TimeSlot(int tsn, Subject subject) {
 		super();
 		this.subject = subject;
-		this.duration = duration;
-		this.startTime = startTime;
+		this.timeSlotNumber = tsn;
 	};
 	
 //	Room room;
