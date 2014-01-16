@@ -15,7 +15,13 @@ public class DaySchedule {
 	enumDayName getNameOfDay() {
 		return this.dayName;
 	}
-	
+	void setNameofDay(enumDayName d) {
+		this.dayName=d;
+	}
+	void setTypeOfDay(enumTypeOfDay f ) {
+		this.tod=f;
+		
+	}
 	protected List<TimeSlot> timeSlots;
 	public DaySchedule() {
 		this.tod = DaySchedule.enumTypeOfDay.STUDYDAY;
@@ -25,3 +31,4 @@ public class DaySchedule {
 		this.tod = td;
 	}
 }
+
