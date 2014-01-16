@@ -22,7 +22,8 @@ public class Main {
 	public static boolean testTime() {
 		Time tm = new Time(9, 15);
 		Time tm1 = tm.add(new Time(0, 180));
-		if(EqualsBuilder.reflectionEquals(tm1, new Time(12,15))) {
+//		if(EqualsBuilder.reflectionEquals(tm1, new Time(12,15))) {
+		if(tm1.compareTo(new Time(12,16))) {
 			System.out.println("Time: Test: Addition: Passed");
 		} else {
 			System.out.println("Time: Test: Addition: Failed");

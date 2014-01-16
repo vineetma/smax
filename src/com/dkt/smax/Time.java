@@ -43,4 +43,9 @@ class Time {
 		}
 		return newTime;
 	}
+	public boolean compareTo (Time t) {
+		if(this.hour == t.getHour() && this.minutes == t.getMinutes())
+			return true;
+		else return false;
+	}
 }
