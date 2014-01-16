@@ -2,7 +2,6 @@ package com.dkt.smax;
 
 import java.util.List;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
 
 public class DaySchedule {
 	enum enumTypeOfDay {HOLIDAY, STUDYDAY};
