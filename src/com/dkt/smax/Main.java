@@ -2,8 +2,6 @@ package com.dkt.smax;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 
-import com.sun.org.apache.xpath.internal.operations.Equals;
-
 public class Main {
 
 	/**
