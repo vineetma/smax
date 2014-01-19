@@ -15,6 +15,9 @@ public class WeekSchedule {
 	public void setDay(int day) {
 		this.day = day;
 	}
+	public WeekSchedule() {
+		daySchedules = new ArrayList<DaySchedule>();
+	}
 	public WeekSchedule(DaySchedule day) {
 		daySchedules = new ArrayList<DaySchedule>();
 		daySchedules.add(day);
