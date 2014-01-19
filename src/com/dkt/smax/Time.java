@@ -4,7 +4,7 @@ class Time {
 	// Attributes
 	protected int hour;
 	protected int minutes;
-
+     protected int week;
 	public int getHour() {
 		return hour;
 	}
@@ -47,5 +47,23 @@ class Time {
 		if(this.hour == t.getHour() && this.minutes == t.getMinutes())
 			return true;
 		else return false;
+	}
+	public int getWeek() {
+		return week;
+	}
+	public void setWeek(int week) {
+		this.week = week;
+	}
+	public Time(week w){
+		this.week =w.week;
+	}
+	public Time(int week){
+		this.week = week;
+	}
+	public Time add(week t){
+		Time newweek = new week(this);
+		newweek.week += w.week;
+	     return newweek;
+		
 	}
 }
