@@ -1,7 +1,7 @@
 /**
- * This is a test..
- */
-/**
+ * Contains all the class definitions required for instantiating
+ * actors of timetable.
+ * 
  * @author vineet
  *
  */
