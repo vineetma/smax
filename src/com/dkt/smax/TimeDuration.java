@@ -7,7 +7,7 @@ package com.dkt.smax;
  * @author Vineet Kumar Maheshwari
  *
  */
-class Time {
+public class TimeDuration {
 	// Attributes
 	protected int hour; //hour of the Time / duration to be maintained in this object
 	protected int minutes; // minutes of the Time/Duration to be maintained in this object
@@ -36,7 +36,7 @@ class Time {
 	 * @return value of current object minutes attribute
 	 */
 	public int getMinutes() {
-		return minutes;
+		return this.minutes;
 	}
 	
 	/**
@@ -45,7 +45,13 @@ class Time {
 	 * @param minutes value of minutes to be saved
 	 */
 	public void setMinutes(int minutes) {
-		this.minutes = minutes;
+		if(minutes < 0) return;
+		//should actually return an exception
+		
+		if(minutes > 60) {
+			this.minutes = minutes % 60;
+			this.hour += minutes / 60;
+		} else this.minutes = minutes;
 	}
 	
 	/**
@@ -54,11 +60,11 @@ class Time {
 	 * 
 	 * @param t another object, values of which are to be copied
 	 */
-	public Time(Time t) {
+	public TimeDuration(TimeDuration t) {
 		this.hour = t.hour;
 		this.minutes = t.minutes;
 	}
-	public Time(int hour, int minutes) {
+	public TimeDuration(int hour, int minutes) {
 		this.hour = hour;
 		this.minutes = minutes;
 	}
@@ -82,8 +88,8 @@ class Time {
 	 * @param t Value of another duration object to be added to this object
 	 * @return
 	 */
-	public Time add(Time t) {
-		Time newTime = new Time(this);
+	public TimeDuration add(TimeDuration t) {
+		TimeDuration newTime = new TimeDuration(this);
 		newTime.minutes += t.minutes;
 		newTime.hour += t.hour + newTime.minutes / 60;
 		newTime.minutes = newTime.minutes % 60;
@@ -107,8 +113,8 @@ class Time {
 	 * @param t
 	 * @return
 	 */
-	public Time subtract(Time t) {
-		Time newTime = new Time(this);
+	public TimeDuration subtract(TimeDuration t) {
+		TimeDuration newTime = new TimeDuration(this);
 		newTime.minutes -= t.minutes;
 		newTime.hour -= t.hour;
 		if(newTime.hour < 0) return null;
@@ -130,7 +136,7 @@ class Time {
 	 *          for value
 	 * @return
 	 */
-	public boolean compareTo (Time t) {
+	public boolean compareTo (TimeDuration t) {
 		if(this.hour == t.getHour() && this.minutes == t.getMinutes())
 			return true;
 		else return false;
@@ -142,4 +148,9 @@ class Time {
 	public void setWeek(int week) {
 		this.week = week;
 	}*/
+	
+	@Override
+	public String toString() {
+		return "Hour: "+this.hour+", Minutes: "+this.minutes;
+	}
 }

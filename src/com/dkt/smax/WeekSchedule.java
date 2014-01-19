@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class WeekSchedule {
-	protected Time dayStartingTime;
+	protected TimeDuration dayStartingTime;
 	protected int weekNumber;
 	protected int duration; // in minutes
 	protected List<DaySchedule> daySchedules;
