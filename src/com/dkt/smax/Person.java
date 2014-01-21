@@ -7,4 +7,7 @@ public abstract class Person {
 protected String name;
 protected List<String> phones;
 abstract public int getPersonType();
+public Person(String name) {
+	this.name = name;
+}
 }
