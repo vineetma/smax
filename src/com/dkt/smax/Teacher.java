@@ -12,9 +12,8 @@ public class Teacher extends Person {
 		this.subjects = subjects;
 	}
 	public int getPersonType() { return 2; }
-	public List<Subject> getSubjects() {
-		return subjects;
-	}
+	
+	
 	public Teacher(String name) {
 		super(name);
 		this.subjects = new ArrayList<Subject>();

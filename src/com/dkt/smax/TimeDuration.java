@@ -90,7 +90,7 @@ public class TimeDuration {
 	 */
 	public TimeDuration add(TimeDuration t) {
 		TimeDuration newTime = new TimeDuration(this);
-		newTime.minutes += t.minutes;
+		newTime.setMinutes (newTime.getMinutes()+t.getMinutes());
 		newTime.hour += t.hour + newTime.minutes / 60;
 		newTime.minutes = newTime.minutes % 60;
 		return newTime;
@@ -151,6 +151,7 @@ public class TimeDuration {
 	
 	@Override
 	public String toString() {
-		return "Hour: "+this.hour+", Minutes: "+this.minutes;
+		
+		return super.toString()+ "--Hour: "+this.hour+", Minutes: "+this.minutes;
 	}
 }
