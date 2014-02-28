@@ -80,7 +80,7 @@ public class Student extends Person implements DBInterface {
 				this.Id = rs.getInt("st_id");
 				this.emailId = rs.getString("stu_email");
 				this.department = rs.getInt("sts_deptt");
-				this.section = rs.getInt("sts_section");
+				this.section = rs.getInt("section");
 				this.semester = rs.getInt("sts_term");
 			} else {
 				throw(new ProvisionException(6, "Student with this roll no does not exist"));
@@ -103,6 +103,7 @@ public class Student extends Person implements DBInterface {
 	@Override
 	public boolean saveObjectToDatabase(Connection conn) throws ProvisionException {
 		java.sql.Statement stmt;
+		ResultSet rs;
 		try {
 			conn.setAutoCommit(true);
 			stmt = conn.createStatement();
@@ -110,7 +111,7 @@ public class Student extends Person implements DBInterface {
 			if (this.getId() == 0) {
 				sql = "select sts_rollno from st_student where sts_rollno='"
 						+ rollNo + "'";
-				ResultSet rs = stmt.executeQuery(sql);
+				rs = stmt.executeQuery(sql);
 				if (rs.next()) {
 					// TODO: create error json object and then return
 					throw new ProvisionException(2, "User already exists");
@@ -130,13 +131,14 @@ public class Student extends Person implements DBInterface {
 					pStmt.setInt(3, this.department);
 					pStmt.setInt(4,  this.semester);
 					pStmt.executeUpdate();
-					
+				}	
 				return true;
+				
 
 			} else {
 				java.sql.PreparedStatement pStmt = conn.prepareStatement("select stu_id from st_users where stu_id=?");
 				pStmt.setInt(1, this.getId());
-				rs = pStmt.executeQuery(sql);
+				rs = pStmt.executeQuery();
 				if (rs.next() == false) {
 					// TODO: create error json object and then return
 					throw new ProvisionException(3, "User does not exist. Invalid Id");
@@ -146,18 +148,19 @@ public class Student extends Person implements DBInterface {
 				pStmt.setString(2, this.lName);
 				pStmt.setString(3, this.emailId);
 				pStmt.setInt(4, this.getId());
-				pStmt.executeUpdate(sql);
+				pStmt.executeUpdate();
 				
-				pStmt = conn.prepareStatement("update st_student set sts_rollno=?, stu_deptt=? where st_id=?");
+				pStmt = conn.prepareStatement("update st_student set sts_rollno=?, sts_deptt=?, sts_section=?, sts_term=? where st_id=?");
 				pStmt.setString(1, this.rollNo);
 				pStmt.setInt(2, this.department);
-				pStmt.setInt(3, this.getId());
-				pStmt.executeUpdate(sql);
+				pStmt.setInt(3, this.getSection());
+				pStmt.setInt(4, this.getSemester());
+				pStmt.setInt(5, this.getId());
+				pStmt.executeUpdate();
 				
 				return true;				
 			}
 		
-			}
 			} catch (SQLException ex) {
 			ex.printStackTrace();
 			try {
@@ -169,8 +172,6 @@ public class Student extends Person implements DBInterface {
 				throw new ProvisionException(4, "DB Error, Could not roll back");
 			}
 		}
-		return false;
-		// TODO Auto-generated method stub
 
 	}
 

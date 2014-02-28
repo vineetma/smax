@@ -53,6 +53,7 @@ angular.module('myApp.controllers', [])
     							$scope.semester = data.student.semester;
     							$scope.department= data.student.department;
     							$scope.password = data.student.password;
+    							$scope.id = data.student.id;
     						} else {
     							alert("No data available");
     							
@@ -67,7 +68,8 @@ angular.module('myApp.controllers', [])
     		};
     		
     $scope.updateStudent = function() {
-    			$.ajax({url:'',
+    	console.log($scope);
+    			$.ajax({url:'http://localhost:8080/StudentTimetable/provision',
     					dataType: 'JSONP',
     	    		    data: {'action':'update',
     			 		    'student':{

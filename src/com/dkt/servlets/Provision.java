@@ -89,7 +89,23 @@ public class Provision extends HttpServlet {
 				jso.put("student", js2);
 			}
 		} else if (request.getParameter("action").equals("update")) {
-			
+			Student std = new Student(
+					request.getParameter("student[firstName]"),
+					request.getParameter("student[lastName]"),
+					request.getParameter("student[email]"),
+					Integer.parseInt(request
+							.getParameter("student[department]")),
+					Integer.parseInt(request
+							.getParameter("student[semester]")),
+					Integer.parseInt(request
+							.getParameter("student[section]")),
+					request.getParameter("student[rollNo]"));
+			std.setId(Integer.parseInt(request.getParameter("student[id]")));
+			stdb.writeObject(std);
+			/* Write the status of the processing to this output */
+			jso.put("status", true);
+			jso.put("status_code", 0);
+			jso.put("status_message", "Student API success");			
 		}
 		} catch (ProvisionException e) {
 			// TODO Auto-generated catch block
