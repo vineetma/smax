@@ -9,7 +9,7 @@ angular.module('myApp.controllers', [])
      $scope.createStudent = function() {
 //    	 var emp = Employee.readAll({employeeId: 223});
     	 console.log("Testing student creation..", $scope.firstName, $scope.lastName);
-    		/*$.ajax({
+    		$.ajax({
     		    url:'http://localhost:8080/StudentTimetable/provision',
     		    dataType: 'jsonp',
     		    data: {'action':'add',
@@ -26,10 +26,15 @@ angular.module('myApp.controllers', [])
     		    },
     		    success: function(data) {
 			 		console.log(data);
+			 		$scope.$apply(function(){
+				 		$scope.status = data.status;
+				 		$scope.statusCode = data.status_code;
+				 		$scope.statusMessage = data.status_message;
+			 		});
 			 	}
 //			 	contentType : "application/json",
     		});
-    	Employee.readAll();*/
+    		/*  	Employee.readAll();
   	 $http.post('http://localhost:8080/StudentTimetable/provision', 
     			 	  {'action':'add', 
     		 		    'student':{
@@ -45,6 +50,6 @@ angular.module('myApp.controllers', [])
     			 	  }
     	 			).success(function(data){
     		 console.log("Return value from ajax call: ", data);
-    	 });
+    	 });*/
      };
     }]);

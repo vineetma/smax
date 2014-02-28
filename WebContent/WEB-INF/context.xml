@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context path="/">
+    <Loader className="org.apache.catalina.loader.VirtualWebappLoader"
+              virtualClasspath="lib/jetty-servlets-9.1.0.RC2.jar"/>
+</Context>

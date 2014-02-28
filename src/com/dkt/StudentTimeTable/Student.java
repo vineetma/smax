@@ -65,14 +65,14 @@ public class Student extends Person implements DBInterface {
 	}
 
 	@Override
-	public boolean getObjectFromDatabase(Connection conn) {
+	public boolean getObjectFromDatabase(Connection conn) throws ProvisionException {
 		return false;
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public boolean saveObjectToDatabase(Connection conn) {
+	public boolean saveObjectToDatabase(Connection conn) throws ProvisionException {
 		java.sql.Statement stmt;
 		try {
 			conn.setAutoCommit(true);
@@ -84,7 +84,7 @@ public class Student extends Person implements DBInterface {
 				ResultSet rs = stmt.executeQuery(sql);
 				if (rs.next()) {
 					// TODO: create error json object and then return
-					return false;
+					throw new ProvisionException(2, "User already exists");
 				}
 				sql = "insert into st_users (stu_fname, stu_lname, stu_email) "
 						+ " values('" + this.fName + "', '" + this.lName
@@ -110,7 +110,7 @@ public class Student extends Person implements DBInterface {
 				rs = pStmt.executeQuery(sql);
 				if (rs.next() == false) {
 					// TODO: create error json object and then return
-					return false;
+					throw new ProvisionException(3, "User does not exist. Invalid Id");
 				}
 				pStmt = conn.prepareStatement("update st_users set stu_fname=?, stu_lname=?, stu_email=? where stu_id=?");
 				pStmt.setString(1, this.fName);
@@ -133,9 +133,11 @@ public class Student extends Person implements DBInterface {
 			ex.printStackTrace();
 			try {
 				conn.rollback();
+				throw new ProvisionException(4, "DB Error, while working with Student DB");
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+				throw new ProvisionException(4, "DB Error, Could not roll back");
 			}
 		}
 		return false;
@@ -144,7 +146,7 @@ public class Student extends Person implements DBInterface {
 	}
 
 	@Override
-	public boolean deleteObjectToDatabase(Connection conn) {
+	public boolean deleteObjectToDatabase(Connection conn)  throws ProvisionException {
 		// TODO Auto-generated method stub
 		return false;
 	}

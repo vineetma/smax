@@ -38,7 +38,7 @@ public class StudentDatabase implements java.io.Closeable{
 		}
 		
 		/* Helps to write those objects which are of type DBInterface */
-		public boolean writeObject(DBInterface obj) {
+		public boolean writeObject(DBInterface obj) throws ProvisionException {
 			boolean ret_val = obj.saveObjectToDatabase(conn);
 			return ret_val;
 		}
@@ -46,7 +46,7 @@ public class StudentDatabase implements java.io.Closeable{
 		/* Reads the object from the database, implementation of reading
 		 * and filling database lies inside the object itself
 		 */
-		public boolean readObject(DBInterface obj) {
+		public boolean readObject(DBInterface obj) throws ProvisionException {
 			obj.getObjectFromDatabase(conn);
 			return false;
 		}
