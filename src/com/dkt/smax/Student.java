@@ -5,7 +5,7 @@ import java.util.List;
 
 public class Student extends Person {
 	protected String branch;
-	protected int sem;
+	protected int semester;
 	protected int section;
 	protected int rollno;
 
@@ -17,12 +17,12 @@ public class Student extends Person {
 		this.branch = branch;
 	}
 
-	protected int getSem() {
-		return sem;
+	protected int getSemester() {
+		return semester;
 	}
 
-	protected void setSem(int sem) {
-		this.sem = sem;
+	protected void setSemester(int sem) {
+		this.semester = sem;
 	}
 
 	protected int getSection() {
