@@ -5,6 +5,30 @@ public abstract class Person {
 	protected String fName;
 	protected String lName;
 	protected String emailId;
+	public String getfName() {
+		return fName;
+	}
+	public void setfName(String fName) {
+		this.fName = fName;
+	}
+	public String getlName() {
+		return lName;
+	}
+	public void setlName(String lName) {
+		this.lName = lName;
+	}
+	public String getEmailId() {
+		return emailId;
+	}
+	public void setEmailId(String emailId) {
+		this.emailId = emailId;
+	}
+	public String getPassword() {
+		return password;
+	}
+	public void setPassword(String password) {
+		this.password = password;
+	}
 	protected String password;
 
 	public Person(String fn, String ln, String em) {

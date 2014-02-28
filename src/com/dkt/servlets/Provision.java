@@ -49,8 +49,10 @@ public class Provision extends HttpServlet {
 		// TODO Auto-generated method stub
 		PrintWriter out = response.getWriter();
 		JSONObject jso = new JSONObject();
+		response.setContentType("application/json");
+		if(request.getParameter("action") == null) return;
+		try {
 		if (request.getParameter("action").equals("add")) {
-			try {
 				Student std = new Student(
 						request.getParameter("student[firstName]"),
 						request.getParameter("student[lastName]"),
@@ -62,27 +64,38 @@ public class Provision extends HttpServlet {
 						Integer.parseInt(request
 								.getParameter("student[section]")),
 						request.getParameter("student[rollNo]"));
-				// StudentData.writeObject(std);
-				
+							
 				stdb.writeObject(std);
-				/*
-				 * This part of the code will have the logic of updating
-				 * database
-				 */
-
-				response.setContentType("application/json");
 				/* Write the status of the processing to this output */
-
-				jso.put("status", false);
+				jso.put("status", true);
 				jso.put("status_code", 0);
 				jso.put("status_message", "Student API success");
-			} catch (ProvisionException e) {
-				// TODO Auto-generated catch block
-				jso.put("status", false);
-				jso.put("status_code", e.getErrorCode());
-				jso.put("status_message", e.getErrorMessage());
-			}
+			
 
+		} else if (request.getParameter("action").equals("read")) {
+			String rollNo = request.getParameter("rollNo");
+			if(rollNo != "" || rollNo != null) {
+				Student std = new Student(rollNo);
+				stdb.readObject(std);
+				JSONObject js2 = new JSONObject();
+				
+				js2.put("id", std.getId());
+				js2.put("firstName", std.getfName());
+				js2.put("lastName", std.getlName());
+				js2.put("email",  std.getEmailId());
+				jso.put("status", true);
+				jso.put("status_code", 0);
+				jso.put("status_message", "Student API success");
+				jso.put("student", js2);
+			}
+		} else if (request.getParameter("action").equals("update")) {
+			
+		}
+		} catch (ProvisionException e) {
+			// TODO Auto-generated catch block
+			jso.put("status", false);
+			jso.put("status_code", e.getErrorCode());
+			jso.put("status_message", e.getErrorMessage());
 		}
 		String callbackName = request.getParameter("callback");
 		response.setContentType("application/json");

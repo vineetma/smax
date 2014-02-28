@@ -21,7 +21,9 @@ public class Student extends Person implements DBInterface {
 		this.section = sec;
 		this.rollNo = rn;
 	}
-
+	public Student(String rollNo) {
+		this("", "", "", 0, 0, 0, rollNo);
+	}
 	public int getDepartment() {
 		return department;
 	}
@@ -66,6 +68,33 @@ public class Student extends Person implements DBInterface {
 
 	@Override
 	public boolean getObjectFromDatabase(Connection conn) throws ProvisionException {
+		java.sql.PreparedStatement pStmt;
+		try {
+			conn.setAutoCommit(true);
+			pStmt = conn.prepareStatement("select * from st_student join st_users on st_id=stu_id where sts_rollno=?");
+			pStmt.setString(1, rollNo);
+			ResultSet rs = pStmt.executeQuery();
+			if(rs.next()) {
+				this.fName = rs.getString("stu_fname");
+				this.lName = rs.getString("stu_lname");
+				this.Id = rs.getInt("st_id");
+				this.emailId = rs.getString("stu_email");
+				this.department = rs.getInt("sts_deptt");
+				this.section = rs.getInt("sts_section");
+				this.semester = rs.getInt("sts_term");
+			} else {
+				throw(new ProvisionException(6, "Student with this roll no does not exist"));
+			}
+			
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+			try {
+				conn.rollback();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		return false;
 		// TODO Auto-generated method stub
 

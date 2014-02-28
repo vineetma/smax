@@ -22,6 +22,7 @@
 <body ng-controller="MainCtrl">
 	<h1>Student Form</h1>
 	<form>
+	<input type="hidden" ng-model="id" />
 <!-- 	<label for="firstName">First Name: </label> -->
 	<input type="text" class="topcoat-text-input" placeholder="First Name" ng-model="firstName" /><br/>
 <!-- 	<label for="lastName">Last Name: </label> -->
@@ -51,9 +52,9 @@
 	</select> <br/>
 	
 	<input type="button" name="create" ng-click="createStudent()" value="Create" />
-	<input type="button" name="update" value="Update" />
+	<input type="button" name="update" value="Update" ng-click="updateStudent()"/>
 	<input type="button" name="getStudentRecord"
-		value="Get Student Record" />
+		value="Get Student Record" ng-click="readStudent()" />
 	<input type="button" name="delete" value="Delete" />
 	<input type="button" name="list" value="List" />
 	</form>
