@@ -83,6 +83,9 @@ public class Provision extends HttpServlet {
 				js2.put("firstName", std.getfName());
 				js2.put("lastName", std.getlName());
 				js2.put("email",  std.getEmailId());
+				js2.put("department",  std.getDepartment());
+				js2.put("section",  std.getSection());
+				js2.put("semester", std.getSemester());
 				jso.put("status", true);
 				jso.put("status_code", 0);
 				jso.put("status_message", "Student API success");

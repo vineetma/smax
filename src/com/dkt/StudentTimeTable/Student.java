@@ -80,7 +80,7 @@ public class Student extends Person implements DBInterface {
 				this.Id = rs.getInt("st_id");
 				this.emailId = rs.getString("stu_email");
 				this.department = rs.getInt("sts_deptt");
-				this.section = rs.getInt("section");
+				this.section = rs.getInt("sts_section");
 				this.semester = rs.getInt("sts_term");
 			} else {
 				throw(new ProvisionException(6, "Student with this roll no does not exist"));
