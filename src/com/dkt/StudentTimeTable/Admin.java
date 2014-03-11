@@ -1,6 +1,8 @@
 package com.dkt.StudentTimeTable;
 
 import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class Admin extends Person  {
 
@@ -15,7 +17,33 @@ public class Admin extends Person  {
 	@Override
 	public boolean getObjectFromDatabase(Connection conn)
 			throws ProvisionException {
-		// TODO Auto-generated method stub
+		java.sql.PreparedStatement pStmt;
+		try {
+			conn.setAutoCommit(false);
+			pStmt = conn.prepareStatement("select * from st_student join st_users on st_id=stu_id where stu_email=?");
+			pStmt.setString(1, emailId);
+			ResultSet rs = pStmt.executeQuery();
+			if(rs.next()) {
+				this.fName = rs.getString("stu_fname");
+				this.lName = rs.getString("stu_lname");
+				//email id already there
+				//this.emailId = rs.getString("stu_email");
+				this.password= rs.getString("stu_password");
+				this.role = rs.getInt("stu_role");
+				this.Id = rs.getInt("st_id");
+			} else {
+				throw(new ProvisionException(6, "Administrator with this email-id does not exist"));
+			}
+			
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+			try {
+				conn.rollback();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		return false;
 	}
 
@@ -33,10 +61,5 @@ public class Admin extends Person  {
 		return false;
 	}
 
-	@Override
-	public USER_ROLE getPersonType() {
-		// TODO Auto-generated method stub
-		return USER_ROLE.ADMIN;
-	}
 
 }

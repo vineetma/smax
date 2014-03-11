@@ -184,16 +184,7 @@ public class Provision extends HttpServlet {
 					jso.put("status_message", "Student List API success");
 
 				}
-			} else if (request.getParameter("action").equals("login")) {
-				Admin adm = new Admin(request.getParameter("user_login"));
-				stdb.readObject(adm);
-				if(adm.getPassword().equals(request.getParameter("user_password"))) {
-					jso.put("status", true);
-					jso.put("status_code", 0);
-					jso.put("status_message", "User logged in successfully");
-					jso.put("user_role", adm.getPersonType());
-				} else throw(new ProvisionException(2, "Invalid username or password"));
-			}
+			} 
 		} catch (ProvisionException e) {
 			// TODO Auto-generated catch block
 			jso.put("status", false);

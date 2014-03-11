@@ -21,6 +21,7 @@ public class Student extends Person  {
 		this.semester = sem;
 		this.section = sec;
 		this.rollNo = rn;
+		this.role = 2;
 	}
 	public Student(String email) {
 		this("", "", email,"", 0, 0, 0, "");
@@ -63,9 +64,6 @@ public class Student extends Person  {
 
 	}
 
-	public USER_ROLE getPersonType() {
-		return Person.USER_ROLE.STUDENT;
-	}
 
 	@Override
 	public boolean getObjectFromDatabase(Connection conn) throws ProvisionException {
@@ -78,6 +76,8 @@ public class Student extends Person  {
 			if(rs.next()) {
 				this.fName = rs.getString("stu_fname");
 				this.lName = rs.getString("stu_lname");
+				this.role = rs.getInt("stu_role");
+				if(this.role != 2) throw new ProvisionException(2, "Not a Student");
 				this.Id = rs.getInt("st_id");
 				this.rollNo = rs.getString("sts_rollno");
 				this.department = rs.getInt("sts_deptt");
@@ -119,9 +119,14 @@ public class Student extends Person  {
 					// TODO: create error json object and then return
 					throw new ProvisionException(2, "User already exists");
 				}
-				sql = "insert into st_users (stu_fname, stu_lname, stu_email , stu_password) "
-						+ " values('" + this.fName + "', '" + this.lName
-						+ "', '" + this.emailId +"','" +this.password +"')";
+				java.sql.PreparedStatement pstmt = conn.prepareStatement("insert into st_users (stu_fname, stu_lname, stu_email , stu_password, stu_role) "
+						+ " values(?, ?, ?, ?, ?)");
+				pstmt.setString(1, this.fName);
+				pstmt.setString(2, this.lName);
+				pstmt.setString(3, this.emailId);
+				pstmt.setString(4, this.password);
+				pstmt.setInt(5, this.role);
+				
 				stmt.executeUpdate(sql);
 				ResultSet keys = stmt.getGeneratedKeys();
 				keys.next();
@@ -148,12 +153,13 @@ public class Student extends Person  {
 					// TODO: create error json object and then return
 					throw new ProvisionException(3, "User does not exist. Invalid Id");
 				}
-				pStmt = conn.prepareStatement("update st_users set stu_fname=?, stu_lname=?, stu_email=?, stu_password=? where stu_id=?");
+				pStmt = conn.prepareStatement("update st_users set stu_fname=?, stu_lname=?, stu_email=?, stu_password=?, stu_role=? where stu_id=?");
 				pStmt.setString(1, this.fName);
 				pStmt.setString(2, this.lName);
 				pStmt.setString(3, this.emailId);
 				pStmt.setString(4, this.password);
-				pStmt.setInt(5, this.getId());
+				pStmt.setInt(5, this.role);
+				pStmt.setInt(6, this.getId());
 				pStmt.executeUpdate();
 				
 				pStmt = conn.prepareStatement("update st_student set sts_rollno=?, sts_deptt=?, sts_section=?, sts_term=? where st_id=?");

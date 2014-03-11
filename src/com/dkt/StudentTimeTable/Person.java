@@ -5,6 +5,7 @@ public abstract class Person implements DBInterface {
 	protected String fName;
 	protected String lName;
 	protected String emailId;
+	protected int role;
 	protected String password;
 	enum USER_ROLE {ADMIN, STUDENT,TEACHER};
 	public String getfName() {
@@ -40,7 +41,6 @@ public abstract class Person implements DBInterface {
 		this.Id = 0;
 		this.password = "";
 	}
-	abstract public USER_ROLE getPersonType();
 
 	public Person(int id, String firstName, String lastName, String email,
 			String Password) {
@@ -57,6 +57,12 @@ public abstract class Person implements DBInterface {
 	}
 	public void setId(int id) {
 		Id = id;
+	}
+	public int getRole() {
+		return role;
+	}
+	public void setRole(int role) {
+		this.role = role;
 	}
 
 }
