@@ -5,7 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-public class Teacher extends Person implements DBInterface {
+public class Teacher extends Person  {
 
 	List<Subject> subjects;
 	 protected String teacherId;
@@ -23,8 +23,8 @@ public class Teacher extends Person implements DBInterface {
 			this.department= dpt;
 			this.teacherId = tid;
 		}
-	public Teacher(String teacherId){
-		this("","","",0,teacherId);
+	public Teacher(String email ){
+		this("","",email,0,"");
 		
 	}
 	public String getTecherId() {
@@ -46,29 +46,29 @@ public class Teacher extends Person implements DBInterface {
 
 	}
 
-	public int getPersonType() {
-		return 2;
+	public USER_ROLE getPersonType() {
+		return USER_ROLE.TEACHER;
 	}
 
 	@Override
 	public boolean getObjectFromDatabase(Connection conn) throws ProvisionException {
 		java.sql.PreparedStatement pStmt;
 		try {
-			pStmt = conn.prepareStatement("select * from st_teacher join st_users on stt_id=stu_id where stt_teacher_id=?");
-			pStmt.setString(1, teacherId);
+			pStmt = conn.prepareStatement("select * from st_teacher join st_users on stt_id=stu_id where stu_email=?");
+			pStmt.setString(1, emailId);
 			ResultSet rs = pStmt.executeQuery();
 			if(rs.next()) {
 				this.fName = rs.getString("stu_fname");
 				this.lName = rs.getString("stu_lname");
 				this.Id = rs.getInt("stt_id");
-				this.emailId = rs.getString("stu_email"); 
+				this.teacherId = rs.getString("stt_teacher_id"); 
 				this.department = rs.getInt("stt_deptt");
 				
 				System.out.println("Deptt: " + this.department  );
 				
 				return true;
 			} else {
-				throw(new ProvisionException(10, "Teacher with Teacher-id does not exist"));
+				throw(new ProvisionException(10, "Teacher with email-id does not exist"));
 			}
 			
 		} catch (SQLException ex) {
@@ -168,5 +168,6 @@ public class Teacher extends Person implements DBInterface {
 		// TODO Auto-generated method stub
 		return true;
 	}
+	
 
 }

@@ -7,7 +7,7 @@ public class StudentDatabase implements java.io.Closeable{
 
 
 		public final String USER = "root";
-		public final String PASSWORD = "ROOT";
+		public final String PASSWORD = "";
 		static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
 		static final String DB_URL = "jdbc:mysql://localhost/studentdb";
 		java.sql.Connection conn = null;

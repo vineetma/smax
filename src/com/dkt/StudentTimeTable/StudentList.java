@@ -69,7 +69,8 @@ public class StudentList implements DBQueryInterface,DBQueryListInterface, JSONa
 				this.section = rs.getInt("sts_section");
 				this.semester = rs.getInt("sts_term");
 				Student std = new Student( rs.getString("stu_fname"), rs.getString("stu_lname"), 
-							rs.getString("stu_email"), department, semester, section, 
+							rs.getString("stu_email"), rs.getString("stu_password"),
+							department, semester, section, 
 							rs.getString("sts_rollno"));
 				listOfStudents.add(std);
 //				System.out.println("Deptt: " + this.department +","+this.semester+","+this.section+"," );

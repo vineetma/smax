@@ -1,11 +1,12 @@
 package com.dkt.StudentTimeTable;
 
-public abstract class Person {
+public abstract class Person implements DBInterface {
 	protected int Id;
 	protected String fName;
 	protected String lName;
 	protected String emailId;
-	
+	protected String password;
+	enum USER_ROLE {ADMIN, STUDENT,TEACHER};
 	public String getfName() {
 		return fName;
 	}
@@ -30,7 +31,7 @@ public abstract class Person {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	protected String password;
+	
 
 	public Person(String fn, String ln, String em) {
 		this.fName = fn;
@@ -39,7 +40,7 @@ public abstract class Person {
 		this.Id = 0;
 		this.password = "";
 	}
-	abstract public int getPersonType();
+	abstract public USER_ROLE getPersonType();
 
 	public Person(int id, String firstName, String lastName, String email,
 			String Password) {

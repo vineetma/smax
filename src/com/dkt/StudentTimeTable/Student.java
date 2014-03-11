@@ -6,23 +6,24 @@ import java.sql.SQLException;
 
 import com.mysql.jdbc.PreparedStatement;
 
-public class Student extends Person implements DBInterface {
+public class Student extends Person  {
 
 	protected int department;
 	protected int semester;
 	protected int section;
 	protected String rollNo;
 
-	public Student(String fn, String ln, String email, int dpt, int sem,
+	public Student(String fn, String ln, String email,String password, int dpt, int sem,
 			int sec, String rn) {
 		super(fn, ln, email);
+		this.password=password;
 		this.department = dpt;
 		this.semester = sem;
 		this.section = sec;
 		this.rollNo = rn;
 	}
-	public Student(String rollNo) {
-		this("", "", "", 0, 0, 0, rollNo);
+	public Student(String email) {
+		this("", "", email,"", 0, 0, 0, "");
 	}
 	public int getDepartment() {
 		return department;
@@ -62,8 +63,8 @@ public class Student extends Person implements DBInterface {
 
 	}
 
-	public int getPersonType() {
-		return 1;
+	public USER_ROLE getPersonType() {
+		return Person.USER_ROLE.STUDENT;
 	}
 
 	@Override
@@ -71,20 +72,21 @@ public class Student extends Person implements DBInterface {
 		java.sql.PreparedStatement pStmt;
 		try {
 			conn.setAutoCommit(false);
-			pStmt = conn.prepareStatement("select * from st_student join st_users on st_id=stu_id where sts_rollno=?");
-			pStmt.setString(1, rollNo);
+			pStmt = conn.prepareStatement("select * from st_student join st_users on st_id=stu_id where stu_email=?");
+			pStmt.setString(1, emailId);
 			ResultSet rs = pStmt.executeQuery();
 			if(rs.next()) {
 				this.fName = rs.getString("stu_fname");
 				this.lName = rs.getString("stu_lname");
 				this.Id = rs.getInt("st_id");
-				this.emailId = rs.getString("stu_email");
+				this.rollNo = rs.getString("sts_rollno");
 				this.department = rs.getInt("sts_deptt");
+				this.password = rs.getString("stu_password");
 				this.section = rs.getInt("sts_section");
 				this.semester = rs.getInt("sts_term");
 				System.out.println("Deptt: " + this.department +","+this.semester+","+this.section+"," +this.rollNo+",");
 			} else {
-				throw(new ProvisionException(6, "Student with this roll no does not exist"));
+				throw(new ProvisionException(6, "Student with this email-id does not exist"));
 			}
 			
 		} catch (SQLException ex) {
@@ -117,9 +119,9 @@ public class Student extends Person implements DBInterface {
 					// TODO: create error json object and then return
 					throw new ProvisionException(2, "User already exists");
 				}
-				sql = "insert into st_users (stu_fname, stu_lname, stu_email) "
+				sql = "insert into st_users (stu_fname, stu_lname, stu_email , stu_password) "
 						+ " values('" + this.fName + "', '" + this.lName
-						+ "', '" + this.emailId + "'" + ")";
+						+ "', '" + this.emailId +"','" +this.password +"')";
 				stmt.executeUpdate(sql);
 				ResultSet keys = stmt.getGeneratedKeys();
 				keys.next();
@@ -146,11 +148,12 @@ public class Student extends Person implements DBInterface {
 					// TODO: create error json object and then return
 					throw new ProvisionException(3, "User does not exist. Invalid Id");
 				}
-				pStmt = conn.prepareStatement("update st_users set stu_fname=?, stu_lname=?, stu_email=? where stu_id=?");
+				pStmt = conn.prepareStatement("update st_users set stu_fname=?, stu_lname=?, stu_email=?, stu_password=? where stu_id=?");
 				pStmt.setString(1, this.fName);
 				pStmt.setString(2, this.lName);
 				pStmt.setString(3, this.emailId);
-				pStmt.setInt(4, this.getId());
+				pStmt.setString(4, this.password);
+				pStmt.setInt(5, this.getId());
 				pStmt.executeUpdate();
 				
 				pStmt = conn.prepareStatement("update st_student set sts_rollno=?, sts_deptt=?, sts_section=?, sts_term=? where st_id=?");
@@ -184,5 +187,4 @@ public class Student extends Person implements DBInterface {
 		// TODO Auto-generated method stub
 		return false;
 	}
-
 }

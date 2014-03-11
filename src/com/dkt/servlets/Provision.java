@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.json.JSONObject;
 
+import com.dkt.StudentTimeTable.Admin;
 import com.dkt.StudentTimeTable.ProvisionException;
 import com.dkt.StudentTimeTable.Student;
 import com.dkt.StudentTimeTable.StudentDatabase;
@@ -63,6 +64,8 @@ public class Provision extends HttpServlet {
 							request.getParameter("student[firstName]"),
 							request.getParameter("student[lastName]"),
 							request.getParameter("student[email]"),
+							request.getParameter("student[password]"),
+						
 							Integer.parseInt(request
 									.getParameter("student[department]")),
 							Integer.parseInt(request
@@ -93,16 +96,16 @@ public class Provision extends HttpServlet {
 				}
 
 			} else if (request.getParameter("action").equals("read")) {
-				String rollNo = request.getParameter("rollNo");
-				if (rollNo != "" || rollNo != null) {
-					Student std = new Student(rollNo);
+				String email = request.getParameter("email");
+				if (email != "" || email != null) {
+					Student std = new Student(email);
 					stdb.readObject(std);
 					JSONObject js2 = new JSONObject();
 
 					js2.put("id", std.getId());
 					js2.put("firstName", std.getfName());
 					js2.put("lastName", std.getlName());
-					js2.put("email", std.getEmailId());
+					js2.put("rollNo", std.getRollNo());
 					js2.put("department", std.getDepartment());
 					js2.put("section", std.getSection());
 					js2.put("semester", std.getSemester());
@@ -117,6 +120,7 @@ public class Provision extends HttpServlet {
 						request.getParameter("student[firstName]"),
 						request.getParameter("student[lastName]"),
 						request.getParameter("student[email]"),
+						request.getParameter("student[password]"),
 						Integer.parseInt(request
 								.getParameter("student[department]")),
 						Integer.parseInt(request
@@ -135,16 +139,16 @@ public class Provision extends HttpServlet {
 			}
 
 			 else if (request.getParameter("action").equals("read1")) {
-				String teacherId = request.getParameter("teacherId");
-				if (teacherId != "" || teacherId != null) {
-					Teacher tch = new Teacher(teacherId);
+				String email = request.getParameter("email");
+				if (email != "" || email != null) {
+					Teacher tch = new Teacher(email);
 					stdb.readObject(tch);
 					JSONObject js2 = new JSONObject();
 
 					js2.put("id", tch.getId());
 					js2.put("firstName", tch.getfName());
 					js2.put("lastName", tch.getlName());
-					js2.put("email", tch.getEmailId());
+					js2.put("teacherId", tch.getTecherId());
 					js2.put("department", tch.getDepartment());
 
 					jso.put("status", true);
@@ -180,6 +184,15 @@ public class Provision extends HttpServlet {
 					jso.put("status_message", "Student List API success");
 
 				}
+			} else if (request.getParameter("action").equals("login")) {
+				Admin adm = new Admin(request.getParameter("user_login"));
+				stdb.readObject(adm);
+				if(adm.getPassword().equals(request.getParameter("user_password"))) {
+					jso.put("status", true);
+					jso.put("status_code", 0);
+					jso.put("status_message", "User logged in successfully");
+					jso.put("user_role", adm.getPersonType());
+				} else throw(new ProvisionException(2, "Invalid username or password"));
 			}
 		} catch (ProvisionException e) {
 			// TODO Auto-generated catch block
@@ -233,11 +246,11 @@ public class Provision extends HttpServlet {
 						int dpt = obj.getInt("department");
 						int sem = obj.getInt("semester");
 						int sec = obj.getInt("section");
+						String pass = obj.getString("password");
 
 						String rn = obj.getString("rollNo");
 
-						Student std = new Student(fn, ln, email, dpt, sem, sec,
-								rn);
+						Student std = new Student(fn, ln, email, pass, dpt, sem, sec, rn);
 						// StudentData.writeObject(std);
 						stdb.writeObject(std);
 						/*
