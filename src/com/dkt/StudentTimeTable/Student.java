@@ -70,7 +70,7 @@ public class Student extends Person implements DBInterface {
 	public boolean getObjectFromDatabase(Connection conn) throws ProvisionException {
 		java.sql.PreparedStatement pStmt;
 		try {
-			conn.setAutoCommit(true);
+			conn.setAutoCommit(false);
 			pStmt = conn.prepareStatement("select * from st_student join st_users on st_id=stu_id where sts_rollno=?");
 			pStmt.setString(1, rollNo);
 			ResultSet rs = pStmt.executeQuery();
@@ -82,6 +82,7 @@ public class Student extends Person implements DBInterface {
 				this.department = rs.getInt("sts_deptt");
 				this.section = rs.getInt("sts_section");
 				this.semester = rs.getInt("sts_term");
+				System.out.println("Deptt: " + this.department +","+this.semester+","+this.section+"," +this.rollNo+",");
 			} else {
 				throw(new ProvisionException(6, "Student with this roll no does not exist"));
 			}
@@ -105,7 +106,7 @@ public class Student extends Person implements DBInterface {
 		java.sql.Statement stmt;
 		ResultSet rs;
 		try {
-			conn.setAutoCommit(true);
+			conn.setAutoCommit(false);
 			stmt = conn.createStatement();
 			String sql;
 			if (this.getId() == 0) {
@@ -125,13 +126,15 @@ public class Student extends Person implements DBInterface {
 				int id = keys.getInt(1);
 				if (id != 0) {
 					this.setId(id);
-					java.sql.PreparedStatement pStmt = conn.prepareStatement("insert into st_student (st_id, sts_rollno, sts_deptt, sts_term) values (?, ?, ?, ?)");
+					java.sql.PreparedStatement pStmt = conn.prepareStatement("insert into st_student (st_id, sts_rollno, sts_deptt, sts_term,sts_section) values (?, ?, ?, ?,?)");
 					pStmt.setInt(1, id);
 					pStmt.setString(2,  this.rollNo);
 					pStmt.setInt(3, this.department);
 					pStmt.setInt(4,  this.semester);
+					pStmt.setInt(5,this.section);
 					pStmt.executeUpdate();
 				}	
+				conn.commit();
 				return true;
 				
 
@@ -157,10 +160,11 @@ public class Student extends Person implements DBInterface {
 				pStmt.setInt(4, this.getSemester());
 				pStmt.setInt(5, this.getId());
 				pStmt.executeUpdate();
+				conn.commit();
+				return true;	
 				
-				return true;				
 			}
-		
+			
 			} catch (SQLException ex) {
 			ex.printStackTrace();
 			try {

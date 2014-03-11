@@ -4,7 +4,7 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import com.dkt.smax.TimeDuration;
+import com.dkt.StudentTimeTable.TimeDuration;
 
 public class TimeTest {
 

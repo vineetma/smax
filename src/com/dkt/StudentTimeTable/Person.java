@@ -5,6 +5,7 @@ public abstract class Person {
 	protected String fName;
 	protected String lName;
 	protected String emailId;
+	
 	public String getfName() {
 		return fName;
 	}

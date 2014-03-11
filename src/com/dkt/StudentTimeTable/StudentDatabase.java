@@ -7,7 +7,7 @@ public class StudentDatabase implements java.io.Closeable{
 
 
 		public final String USER = "root";
-		public final String PASSWORD = "";
+		public final String PASSWORD = "ROOT";
 		static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
 		static final String DB_URL = "jdbc:mysql://localhost/studentdb";
 		java.sql.Connection conn = null;
@@ -47,8 +47,8 @@ public class StudentDatabase implements java.io.Closeable{
 		 * and filling database lies inside the object itself
 		 */
 		public boolean readObject(DBInterface obj) throws ProvisionException {
-			obj.getObjectFromDatabase(conn);
-			return false;
+			
+			return obj.getObjectFromDatabase(conn);
 		}
 
 		/* Ensures that the database connections and other house cleaning job
@@ -68,6 +68,11 @@ public class StudentDatabase implements java.io.Closeable{
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+		}
+		public boolean readObjectList(DBQueryListInterface obj) {
+			// TODO Auto-generated method stub
+			return obj.getObjectListFromDatabase(conn);
+			
 		}
 
 }
