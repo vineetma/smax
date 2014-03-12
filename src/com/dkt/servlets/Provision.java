@@ -65,13 +65,13 @@ public class Provision extends HttpServlet {
 							request.getParameter("student[lastName]"),
 							request.getParameter("student[email]"),
 							request.getParameter("student[password]"),
-						
-							Integer.parseInt(request
+					        Integer.parseInt(request
 									.getParameter("student[department]")),
 							Integer.parseInt(request
 									.getParameter("student[semester]")),
 							Integer.parseInt(request
 									.getParameter("student[section]")),
+									
 							request.getParameter("student[rollNo]"));
 
 					stdb.writeObject(std);

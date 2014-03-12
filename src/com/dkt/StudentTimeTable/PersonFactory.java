@@ -24,7 +24,7 @@ public class PersonFactory {
 					person = new Student(em);
 				} else if(role == 3) {
 					person = new Teacher(em);
-				}
+				} else throw new ProvisionException(7, "User role not set");
 				stdb.readObject(person);
 				return person;
 			} else {

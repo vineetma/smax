@@ -54,6 +54,8 @@ public class Login extends HttpServlet {
 		try {
 			if (request.getParameter("action").equals("validateUser")) {
 				com.dkt.StudentTimeTable.Person person = PersonFactory.getPersonFromEmail(request.getParameter("user_login"));
+				if(person == null) throw new ProvisionException (4, "User does not exist");
+				
 				if(person.getPassword().equals(request.getParameter("user_password"))) {
 					jso.put("status", true);
 					jso.put("status_code", 0);

@@ -109,17 +109,19 @@ public class Student extends Person  {
 		ResultSet rs;
 		try {
 			conn.setAutoCommit(false);
+			
 			stmt = conn.createStatement();
 			String sql;
+			java.sql.PreparedStatement pstmt = null;
 			if (this.getId() == 0) {
-				sql = "select sts_rollno from st_student where sts_rollno='"
-						+ rollNo + "'";
-				rs = stmt.executeQuery(sql);
+				pstmt = conn.prepareStatement("select sts_rollno from st_student where sts_rollno=?");
+				pstmt.setString(1, rollNo);
+				rs = pstmt.executeQuery();
 				if (rs.next()) {
 					// TODO: create error json object and then return
 					throw new ProvisionException(2, "User already exists");
 				}
-				java.sql.PreparedStatement pstmt = conn.prepareStatement("insert into st_users (stu_fname, stu_lname, stu_email , stu_password, stu_role) "
+				pstmt = conn.prepareStatement("insert into st_users (stu_fname, stu_lname, stu_email , stu_password, stu_role) "
 						+ " values(?, ?, ?, ?, ?)");
 				pstmt.setString(1, this.fName);
 				pstmt.setString(2, this.lName);
@@ -127,10 +129,15 @@ public class Student extends Person  {
 				pstmt.setString(4, this.password);
 				pstmt.setInt(5, this.role);
 				
-				stmt.executeUpdate(sql);
-				ResultSet keys = stmt.getGeneratedKeys();
-				keys.next();
-				int id = keys.getInt(1);
+				pstmt.executeUpdate();
+				ResultSet keys = pstmt.getGeneratedKeys();
+				int id = 0;
+				if(keys.next()) {
+				id = keys.getInt(1);
+				} else {
+					conn.rollback();
+					throw new ProvisionException(10, "Did not get the id of last insert");
+				}
 				if (id != 0) {
 					this.setId(id);
 					java.sql.PreparedStatement pStmt = conn.prepareStatement("insert into st_student (st_id, sts_rollno, sts_deptt, sts_term,sts_section) values (?, ?, ?, ?,?)");
