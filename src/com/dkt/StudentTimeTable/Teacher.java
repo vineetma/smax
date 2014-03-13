@@ -17,14 +17,16 @@ public class Teacher extends Person  {
 	public void setDepartment(int department) {
 		this.department = department;
 	}
-	public Teacher(String fn, String ln, String email,int dpt,String tid) {
+	public Teacher(String fn, String ln, String email,String password, int dpt,String tid) {
 			super(fn, ln, email);
 			
 			this.department= dpt;
 			this.teacherId = tid;
+			this.role = 3;
+			this.password=password;
 		}
 	public Teacher(String email ){
-		this("","",email,0,"");
+		this("","",email,"",0,"");
 		
 	}
 	public String getTecherId() {
@@ -60,7 +62,11 @@ public class Teacher extends Person  {
 			if(rs.next()) {
 				this.fName = rs.getString("stu_fname");
 				this.lName = rs.getString("stu_lname");
+				this.role = rs.getInt("stu_role");
+				if(this.role != 3) throw new ProvisionException(3, "Not a Teacher");
 				this.Id = rs.getInt("stt_id");
+				
+				this.password = rs.getString("stu_password");
 				this.teacherId = rs.getString("stt_teacher_id"); 
 				this.department = rs.getInt("stt_deptt");
 				
@@ -94,19 +100,24 @@ public class Teacher extends Person  {
 			conn.setAutoCommit(false);
 			stmt = conn.createStatement();
 			String sql;
+			java.sql.PreparedStatement pstmt = null;
 			if (this.getId() == 0) {
-				sql = "select stt_teacher_id from st_teacher where stt_teacher_id='"
-						+ teacherId + "'";
-				rs = stmt.executeQuery(sql); 
+				pstmt = conn.prepareStatement ("select stt_teacher_id from st_teacher where stt_teacher_id='"
+						+ teacherId + "'");
+				rs = pstmt.executeQuery();
 				if (rs.next()) {
 					// TODO: create error json object and then return
 					throw new ProvisionException(2, "User already exists");
 				}
-				sql = "insert into st_users (stu_fname, stu_lname, stu_email) "
-						+ " values('" + this.fName + "', '" + this.lName
-						+ "', '" + this.emailId + "'" + ")";
-				stmt.executeUpdate(sql);
-				ResultSet keys = stmt.getGeneratedKeys();
+				pstmt = conn.prepareStatement("insert into st_users (stu_fname, stu_lname, stu_email , stu_password, stu_role) "
+						+ " values(?, ?, ?, ?, ?)");
+				pstmt.setString(1, this.fName);
+				pstmt.setString(2, this.lName);
+				pstmt.setString(3, this.emailId);
+				pstmt.setString(4, this.password);
+				pstmt.setInt(5, this.role);
+				pstmt.executeUpdate();
+				ResultSet keys = pstmt.getGeneratedKeys();
 				keys.next();
 				int id = keys.getInt(1);
 				if (id != 0) {
@@ -131,11 +142,12 @@ public class Teacher extends Person  {
 					// TODO: create error json object and then return
 					throw new ProvisionException(3, "User does not exist. Invalid Id");
 				}
-				pStmt = conn.prepareStatement("update st_users set stu_fname=?, stu_lname=?, stu_email=? where stu_id=?");
+				pStmt = conn.prepareStatement("update st_users set stu_fname=?, stu_lname=?, stu_email=?,stu_role=? where stu_id=?");
 				pStmt.setString(1, this.fName);
 				pStmt.setString(2, this.lName);
 				pStmt.setString(3, this.emailId);
-				pStmt.setInt(4, this.getId());
+				pStmt.setInt(4, this.role);
+				pStmt.setInt(5, this.getId());
 				pStmt.executeUpdate();
 				
 				pStmt = conn.prepareStatement("update st_teacher set stt_teacher_id=?, stt_deptt=? where stt_id=?");

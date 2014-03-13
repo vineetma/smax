@@ -11,7 +11,7 @@ angular.module('myApp.controllers', [])
 // var emp = Employee.readAll({employeeId: 223});
     	 console.log("Testing student creation..", $scope.firstName, $scope.lastName);
     		$.ajax({
-    		    url:'http://localhost:8080/StudentTimetable/provision',
+    		    url:'http://localhost:8080/StudentTimetable1/provision',
     		    dataType: 'jsonp',
     		    data: {'action':'add',
 		 		    'student':{
@@ -37,7 +37,7 @@ angular.module('myApp.controllers', [])
      };
     $scope.readStudent = function() {
     			console.log("Testing student read..", $scope.rollNo);
-    			$.ajax({url:'http://localhost:8080/StudentTimetable/provision',
+    			$.ajax({url:'http://localhost:8080/StudentTimetable1/provision',
     					dataType: 'JSONP',
     					data: {
     						action: 'read',
@@ -69,7 +69,7 @@ angular.module('myApp.controllers', [])
     		
     $scope.updateStudent = function() {
     	console.log($scope);
-    			$.ajax({url:'http://localhost:8080/StudentTimetable/provision',
+    			$.ajax({url:'http://localhost:8080/StudentTimetable1/provision',
     					dataType: 'JSONP',
     	    		    data: {'action':'update',
     			 		    'student':{

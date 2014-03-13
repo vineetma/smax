@@ -84,6 +84,7 @@ public class Provision extends HttpServlet {
 							request.getParameter("teacher[firstName]"),
 							request.getParameter("teacher[lastName]"),
 							request.getParameter("teacher[email]"),
+							request.getParameter("teacher[password]"),
 							Integer.parseInt(request
 									.getParameter("teacher[department]")),
 							request.getParameter("teacher[teacherId]"));
@@ -94,7 +95,20 @@ public class Provision extends HttpServlet {
 					jso.put("status_code", 0);
 					jso.put("status_message", "Teacher API success");
 				}
-
+				else if (request.getParameter("admin[firstName]") != null) {
+					
+					Admin adm = new Admin(
+							request.getParameter("admin[firstName]"),
+							request.getParameter("admin[lastName]"),
+							request.getParameter("admin[email]"),
+							request.getParameter("admin[password]"));
+					stdb.writeObject(adm);
+					/* Write the status of the processing to this output */
+					jso.put("status", true);
+					jso.put("status_code", 0);
+					jso.put("status_message", "Admin API success");
+				}
+				
 			} else if (request.getParameter("action").equals("read")) {
 				String email = request.getParameter("email");
 				if (email != "" || email != null) {
@@ -161,6 +175,7 @@ public class Provision extends HttpServlet {
 						request.getParameter("teacher[firstName]"),
 						request.getParameter("teacher[lastName]"),
 						request.getParameter("teacher[email]"),
+						request.getParameter("teacher[password]"),
 						Integer.parseInt(request
 								.getParameter("teacher[department]")),
 
@@ -270,10 +285,10 @@ public class Provision extends HttpServlet {
 						String ln = obj.getString("lastName");
 						String email = obj.getString("email");
 						int dpt = obj.getInt("department");
-
+						String pass = obj.getString("password");
 						String tid = obj.getString("teacherId");
 
-						Teacher tch = new Teacher(fn, ln, email, dpt, tid);
+						Teacher tch = new Teacher(fn, ln, email, pass, dpt, tid);
 						// StudentData.writeObject(std);
 						stdb.writeObject(tch);
 						/*
