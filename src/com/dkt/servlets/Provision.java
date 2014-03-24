@@ -87,7 +87,7 @@ public class Provision extends HttpServlet {
 							request.getParameter("teacher[password]"),
 							Integer.parseInt(request
 									.getParameter("teacher[department]")),
-							request.getParameter("teacher[teacherId]"));
+							Integer.parseInt(request.getParameter("teacher[teacherId]")));
 
 					stdb.writeObject(tch);
 					/* Write the status of the processing to this output */
@@ -162,7 +162,7 @@ public class Provision extends HttpServlet {
 					js2.put("id", tch.getId());
 					js2.put("firstName", tch.getfName());
 					js2.put("lastName", tch.getlName());
-					js2.put("teacherId", tch.getTecherId());
+					js2.put("teacherId", tch.getTeacherId());
 					js2.put("department", tch.getDepartment());
 
 					jso.put("status", true);
@@ -179,7 +179,7 @@ public class Provision extends HttpServlet {
 						Integer.parseInt(request
 								.getParameter("teacher[department]")),
 
-						request.getParameter("teacher[teacherId]"));
+						Integer.parseInt(request.getParameter("teacher[teacherId]")));
 				tch.setId(Integer.parseInt(request.getParameter("teacher[id]")));
 				stdb.writeObject(tch);
 				/* Write the status of the processing to this output */
@@ -286,7 +286,7 @@ public class Provision extends HttpServlet {
 						String email = obj.getString("email");
 						int dpt = obj.getInt("department");
 						String pass = obj.getString("password");
-						String tid = obj.getString("teacherId");
+						int tid = obj.getInt("teacherId");
 
 						Teacher tch = new Teacher(fn, ln, email, pass, dpt, tid);
 						// StudentData.writeObject(std);

@@ -103,6 +103,7 @@ public class StudentList implements DBQueryInterface,DBQueryListInterface, JSONa
 			JSONObject jsStd = new JSONObject();
 			jsStd.put("firstName", s.getfName());
 			jsStd.put("lastName", s.getlName());
+			jsStd.put("rollNo", s.getRollNo());
 			jsa.put(jsStd);
 		}
 		js.put("studentList", jsa);

@@ -8,16 +8,23 @@ import java.util.List;
 public class Teacher extends Person  {
 
 	List<Subject> subjects;
-	 protected String teacherId;
+	 protected int teacherId;
 	 protected int department;
 	 
+	 
+	 public String getFName(){
+		 return super.getfName();
+	 }
+	 public String getLName(){
+		 return super.getlName();
+	 }
 	 public int getDepartment() {
 		return department;
 	}
 	public void setDepartment(int department) {
 		this.department = department;
 	}
-	public Teacher(String fn, String ln, String email,String password, int dpt,String tid) {
+	public Teacher(String fn, String ln, String email,String password, int dpt,int tid) {
 			super(fn, ln, email);
 			
 			this.department= dpt;
@@ -26,14 +33,14 @@ public class Teacher extends Person  {
 			this.password=password;
 		}
 	public Teacher(String email ){
-		this("","",email,"",0,"");
+		this("","",email,"",0,0);
 		
 	}
-	public String getTecherId() {
+	public int getTeacherId() {
 		return teacherId;
 	}
 
-	public void setTecherId(String teacherId) {
+	public void setTeacherId(int teacherId) {
 		this.teacherId = teacherId;
 	}
 
@@ -67,7 +74,7 @@ public class Teacher extends Person  {
 				this.Id = rs.getInt("stt_id");
 				
 				this.password = rs.getString("stu_password");
-				this.teacherId = rs.getString("stt_teacher_id"); 
+				this.teacherId = rs.getInt("stt_teacher_id"); 
 				this.department = rs.getInt("stt_deptt");
 				
 				System.out.println("Deptt: " + this.department  );
@@ -124,7 +131,7 @@ public class Teacher extends Person  {
 					this.setId(id);
 					java.sql.PreparedStatement pStmt = conn.prepareStatement("insert into st_teacher (stt_id, stt_teacher_id, stt_deptt) values (?, ?, ?)");
 					pStmt.setInt(1, id);
-					pStmt.setString(2,  this.teacherId);
+					pStmt.setInt(2,  this.teacherId);
 					pStmt.setInt(3, this.department);
 					
 					pStmt.executeUpdate();
@@ -151,7 +158,7 @@ public class Teacher extends Person  {
 				pStmt.executeUpdate();
 				
 				pStmt = conn.prepareStatement("update st_teacher set stt_teacher_id=?, stt_deptt=? where stt_id=?");
-				pStmt.setString(1, this.teacherId);
+				pStmt.setInt(1, this.teacherId);
 				pStmt.setInt(2, this.department);
 				
 				pStmt.setInt(3, this.getId());
