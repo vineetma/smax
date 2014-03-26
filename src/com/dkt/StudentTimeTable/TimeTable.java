@@ -151,7 +151,9 @@ public class TimeTable implements DBQueryInterface, DBInterface, JSONable {
 		JSONArray jsaWeekDays = new JSONArray();
 		JSONArray jsaTimetableWeeks = new JSONArray();
 		for (Timeslot ts : listOfTimeTable) {
+			lastDay = day;
 			day = ts.getDay();
+			lastWeek = week;
 			week = ts.getWeek();
 			JSONObject jsSub = new JSONObject(ts.getSubjectTeacher().getSubject());
 			JSONObject jsTchr = new JSONObject(ts.getSubjectTeacher().getTeacher());
