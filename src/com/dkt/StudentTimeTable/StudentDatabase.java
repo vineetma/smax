@@ -6,8 +6,8 @@ import java.sql.SQLException;
 public class StudentDatabase implements java.io.Closeable{
 
 
-		public final String USER = "root";
-		public final String PASSWORD = "ROOT";
+		protected String dbUser = "root";
+		protected String dbPassword = "Abcd@1234";
 		static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
 		static final String DB_URL = "jdbc:mysql://localhost/studentdb";
 		java.sql.Connection conn = null;
@@ -27,7 +27,7 @@ public class StudentDatabase implements java.io.Closeable{
 				// STEP 3: Open a connection
 				System.out.println("Connecting to database...");
 
-				conn = DriverManager.getConnection(DB_URL, USER, PASSWORD);
+				conn = DriverManager.getConnection(DB_URL, dbUser, dbPassword);
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -73,6 +73,14 @@ public class StudentDatabase implements java.io.Closeable{
 			// TODO Auto-generated method stub
 			return obj.getObjectListFromDatabase(conn);
 			
+		}
+		public void setDbUser(String un) {
+			// TODO Auto-generated method stub
+			this.dbUser = un;
+		}
+		public void setDbPassword(String pwd) {
+			// TODO Auto-generated method stub
+			this.dbPassword = pwd;
 		}
 
 }
