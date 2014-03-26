@@ -36,7 +36,8 @@ public class Login extends HttpServlet {
 	@Override
 	public void init() {
 		stdb = new StudentDatabase();
-
+		stdb.setDbUser(getServletContext().getInitParameter("dbUser"));
+		stdb.setDbPassword(getServletContext().getInitParameter("dbPassword"));
 		stdb.open();
 		PersonFactory.setDB(stdb);
 	}
