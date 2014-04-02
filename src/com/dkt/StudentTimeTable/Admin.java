@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import com.dkt.StudentTimeTable.Person;
+
 public class Admin extends Person  {
 	
 	

@@ -1,5 +1,7 @@
 package com.dkt.StudentTimeTable;
 
+import com.dkt.StudentTimeTable.DBInterface;
+
 public abstract class Person implements DBInterface {
 	protected int Id;
 	protected String fName;

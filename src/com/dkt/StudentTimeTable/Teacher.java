@@ -5,7 +5,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-public class Teacher extends Person  {
+import com.dkt.StudentTimeTable.DBInterface;
+import com.dkt.StudentTimeTable.Person;
+import com.dkt.StudentTimeTable.Subject;
+
+public class Teacher extends Person implements DBInterface {
 
 	List<Subject> subjects;
 	 protected int teacherId;

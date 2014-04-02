@@ -3,11 +3,13 @@ import java.io.IOException;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+import com.dkt.StudentTimeTable.DBInterface;
+
 public class StudentDatabase implements java.io.Closeable{
 
 
-		protected String dbUser = "root";
-		protected String dbPassword = "Abcd@1234";
+		protected String dbUser = "";
+		protected String dbPassword = "";
 		static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
 		static final String DB_URL = "jdbc:mysql://localhost/studentdb";
 		java.sql.Connection conn = null;

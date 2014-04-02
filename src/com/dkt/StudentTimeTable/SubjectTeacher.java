@@ -1,5 +1,8 @@
 package com.dkt.StudentTimeTable;
 
+import com.dkt.StudentTimeTable.Subject;
+import com.dkt.StudentTimeTable.Teacher;
+
 public class SubjectTeacher {
 	protected int id;
 	protected Subject subject;

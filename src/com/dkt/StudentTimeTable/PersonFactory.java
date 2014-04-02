@@ -3,6 +3,11 @@ package com.dkt.StudentTimeTable;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import com.dkt.StudentTimeTable.Person;
+import com.dkt.StudentTimeTable.Student;
+import com.dkt.StudentTimeTable.StudentDatabase;
+import com.dkt.StudentTimeTable.Teacher;
+
 public class PersonFactory {
 	static StudentDatabase stdb = null;
 	public static void setDB(StudentDatabase sd) {

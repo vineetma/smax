@@ -4,16 +4,24 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+
+import com.dkt.StudentTimeTable.DBInterface;
+import com.dkt.StudentTimeTable.DBQueryInterface;
+import com.dkt.StudentTimeTable.Subject;
+import com.dkt.StudentTimeTable.Teacher;
 
 public class TimeTable implements DBQueryInterface, DBInterface, JSONable {
 	List<Timeslot> listOfTimeTable = null;
 	protected int department;
 	protected int semester;
 	protected int section;
+	protected Date startDate;
+	protected int week;
 	protected int id;
 
 	public int getId() {
@@ -48,12 +56,16 @@ public class TimeTable implements DBQueryInterface, DBInterface, JSONable {
 		this.section = section;
 	}
 
-	public TimeTable(int i, int department, int section, int semester) {
+	public TimeTable(int i, int department, int section, int semester, int week) {
 		this.id = i;
 		this.department = department;
 		this.section = section;
 		this.semester = semester;
+		this.week = week;
 		listOfTimeTable = new ArrayList<Timeslot>();
+	}
+	public TimeTable(int i, int department, int section, int semester) {
+		this(i, department, section, semester, 0);
 	}
 
 	@Override
@@ -165,6 +177,8 @@ public class TimeTable implements DBQueryInterface, DBInterface, JSONable {
 			jsTs.put("subjectTeacher", jsST);
 			jsaDayTs.put(jsTs);
 			if (day != lastDay && lastDay != 0) {
+				//TODO: Generate the date relevant for this day.
+				// by doing start date + week * day
 				jsaWeekDays.put(jsaDayTs);
 				jsaDayTs = new JSONArray();
 			}

@@ -9,6 +9,9 @@ import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.dkt.StudentTimeTable.DBQueryInterface;
+import com.dkt.StudentTimeTable.Student;
+
 public class StudentList implements DBQueryInterface,DBQueryListInterface, JSONable{
 	List<Student> listOfStudents ;
 	protected int department;
@@ -104,6 +107,8 @@ public class StudentList implements DBQueryInterface,DBQueryListInterface, JSONa
 			jsStd.put("firstName", s.getfName());
 			jsStd.put("lastName", s.getlName());
 			jsStd.put("rollNo", s.getRollNo());
+			jsStd.put("email", s.getEmailId());
+			
 			jsa.put(jsStd);
 		}
 		js.put("studentList", jsa);

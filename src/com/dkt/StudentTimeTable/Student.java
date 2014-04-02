@@ -4,9 +4,11 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import com.dkt.StudentTimeTable.DBInterface;
+import com.dkt.StudentTimeTable.Person;
 import com.mysql.jdbc.PreparedStatement;
 
-public class Student extends Person  {
+public class Student extends Person implements DBInterface {
 
 	protected int department;
 	protected int semester;
