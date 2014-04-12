@@ -11,11 +11,13 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.json.JSONObject;
 
+import com.dkt.StudentTimeTable.Person;
 import com.dkt.StudentTimeTable.PersonFactory;
 import com.dkt.StudentTimeTable.ProvisionException;
 import com.dkt.StudentTimeTable.StudentDatabase;
 import com.dkt.StudentTimeTable.StudentList;
 import com.dkt.StudentTimeTable.TimeTable;
+import com.dkt.StudentTimeTable.TimeTables;
 
 /**
  * Servlet implementation class timetable
@@ -58,9 +60,8 @@ public class Timetable extends HttpServlet {
 				int department = Integer.parseInt(request.getParameter("department"));
 				int section = Integer.parseInt(request.getParameter("section"));
 				int semester = Integer.parseInt(request.getParameter("term"));
-				
-				// id is null, as we do not know the timeslot..
-				TimeTable stdl = new TimeTable(0, section, department, semester);
+					// id is null, as we do not know the timeslot..
+			    	TimeTable stdl = new TimeTable(0, section, department, semester);
 					stdb.readObject(stdl);
 				
 				jso.put("status", true);
@@ -68,7 +69,22 @@ public class Timetable extends HttpServlet {
 				jso.put("status_message", " API success");
 				jso.put("timeSlots", stdl.getJSon());
 			}
+		} else if(request.getParameter("action").equals("myTimetable")) {
+			if(request.getParameter("week")!=null && request.getParameter("userId") != null){
+				Person per = PersonFactory.getPersonFromEmail(request.getParameter("userId"));
+				
+				int week=Integer.parseInt(request.getParameter("week"));
+			TimeTables sdt2= new TimeTables(per.getId(),week);
+			stdb.readObject(sdt2);
+			
+			jso.put("status", true);
+			jso.put("status_code", 0);
+			jso.put("status_message", " API success");
+			jso.put("timeSlots", sdt2.getJSon());
+			
+			}
 		}
+		
 
 			} catch (ProvisionException e) {
 				// TODO Auto-generated catch block

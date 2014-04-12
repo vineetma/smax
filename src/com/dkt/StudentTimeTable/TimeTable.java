@@ -23,6 +23,7 @@ public class TimeTable implements DBQueryInterface, DBInterface, JSONable {
 	protected Date startDate;
 	protected int week;
 	protected int id;
+	private int teacherId;
 
 	public int getId() {
 		return id;
@@ -65,7 +66,7 @@ public class TimeTable implements DBQueryInterface, DBInterface, JSONable {
 		listOfTimeTable = new ArrayList<Timeslot>();
 	}
 	public TimeTable(int i, int department, int section, int semester) {
-		this(i, department, section, semester, 0);
+		this(i, department, section, semester,0);
 	}
 
 	@Override
@@ -75,7 +76,7 @@ public class TimeTable implements DBQueryInterface, DBInterface, JSONable {
 		java.sql.PreparedStatement pStmt;
 		try {
 			conn.setAutoCommit(false);
-			pStmt = conn
+/*			pStmt = conn
 					.prepareStatement("select * from st_timetable where sttb_department=? and sttb_term=? and sttb_section=? ");
 			pStmt.setInt(1, department);
 			pStmt.setInt(2, semester);
@@ -87,13 +88,27 @@ public class TimeTable implements DBQueryInterface, DBInterface, JSONable {
 			} else {
 				throw new ProvisionException(3, "can't find timetable entry");
 			}
-
-			String sql = "select stts_id, sts_subject_id, stb_name, sts_teacher_id, stu_fname, stu_lname, stts_number, stts_room, stts_week, stts_day, stts_subject_teacher_id "
+*/
+/*			String sql = "select stts_id, sts_subject_id, stb_name, sts_teacher_id, stu_fname, stu_lname, stts_number, stts_room, stts_week, stts_day, stts_subject_teacher_id "
 					+ " from st_timetable_slots "
 					+ " left join st_subject_teacher a on a.stst_id=stts_subject_teacher_id  "
 					+ " left join st_subjects on stb_id=sts_subject_id "
 					+ " left join st_users on sts_teacher_id=stu_id where stts_tt_id='"
-					+ sttb_id + "' order by stts_week, stts_day;";
+					+ sttb_id + "' order by stts_week, stts_day;";*/
+			String whereStr = null;
+			if(department != 0 && section != 0 && semester != 0)
+				whereStr = "where sttb_department='"+department+"' and sttb_term='"+semester+"' and sttb_section='"+section+"' order by stts_week, stts_day;";
+			else if(week != 0 && teacherId != 0 && id != 0) {
+				whereStr = "where stts_week='"+week+"' and sts_teacher_id='"+teacherId+"' and sttb_id='"+id+"' order by stts_week, stts_day;";				
+			} else if(id != 0) {
+				whereStr = "where sttb_id='"+id+"' order by stts_week, stts_day;";
+			} else whereStr = "where 1";
+			String sql = "select stts_id, sts_subject_id, stb_name, sts_teacher_id, stu_fname, stu_lname, stts_number, stts_room, stts_week, stts_day, stts_subject_teacher_id "
+				+ " from st_timetable_slots "
+				+ " left join st_subject_teacher a on a.stst_id=stts_subject_teacher_id  "
+				+ " left join st_subjects on stb_id=sts_subject_id "
+				+ " left join st_timetable on sttb_id=stts_tt_id"
+				+ " left join st_users on sts_teacher_id=stu_id "+whereStr;
 			pStmt = conn.prepareStatement(sql);
 /*			pStmt = conn
 					.prepareStatement("select * from st_timetable_slots where stts_tt_id="
@@ -115,7 +130,7 @@ public class TimeTable implements DBQueryInterface, DBInterface, JSONable {
 						rs.getInt("stts_room"));*/
 				listOfTimeTable.add(tt2);
 			}
-			return true;
+			return false;
 
 		} catch (SQLException ex) {
 			ex.printStackTrace();
@@ -194,6 +209,30 @@ public class TimeTable implements DBQueryInterface, DBInterface, JSONable {
 
 		js.put("timetable", jsaTimetableWeeks);
 		return js;
+	}
+
+	public Date getStartDate() {
+		return startDate;
+	}
+
+	public void setStartDate(Date startDate) {
+		this.startDate = startDate;
+	}
+
+	public int getWeek() {
+		return week;
+	}
+
+	public void setWeek(int week) {
+		this.week = week;
+	}
+
+	public int getTeacherId() {
+		return teacherId;
+	}
+
+	public void setTeacherId(int teacherId) {
+		this.teacherId = teacherId;
 	}
 
 }
