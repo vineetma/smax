@@ -12,6 +12,20 @@ import org.json.JSONObject;
 public class TimeTables implements DBQueryInterface, DBInterface, JSONable {
 	int teacherId=0;
 	int week = 0;
+	protected int semester;
+	public int getSemester() {
+		return semester;
+	}
+	public void setSemester(int semester) {
+		this.semester = semester;
+	}
+	public int getSection() {
+		return section;
+	}
+	public void setSection(int section) {
+		this.section = section;
+	}
+	protected int section;
 	protected List<TimeTable> timeTables = null;
 	public TimeTables() {
 		teacherId = 0;
@@ -56,7 +70,8 @@ public class TimeTables implements DBQueryInterface, DBInterface, JSONable {
 					int timeTableId = rs.getInt("sttb_id");
 					TimeTable tt = new TimeTable(timeTableId, 0, 0, 0);
 					tt.setTeacherId(teacherId);
-					tt.setWeek(week); 
+					tt.setWeek(week);
+				
 		
 					tt.getObjectFromDatabase(conn);
 					timeTables.add(tt);

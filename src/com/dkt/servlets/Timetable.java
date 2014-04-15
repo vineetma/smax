@@ -80,7 +80,7 @@ public class Timetable extends HttpServlet {
 			jso.put("status", true);
 			jso.put("status_code", 0);
 			jso.put("status_message", " API success");
-			jso.put("timeSlots", sdt2.getJSon());
+			jso.put("teacherTimetable", sdt2.getJSon());
 			
 			}
 		}
