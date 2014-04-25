@@ -44,7 +44,7 @@ public class Admin extends Person  {
 				//this.emailId = rs.getString("stu_email");
 				this.password= rs.getString("stu_password");
 				this.role = rs.getInt("stu_role");
-				this.Id = rs.getInt("st_id");
+				this.Id = rs.getInt("stu_id");
 			} else {
 				throw(new ProvisionException(6, "Administrator with this email-id does not exist"));
 			}
