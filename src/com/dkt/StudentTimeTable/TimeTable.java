@@ -79,11 +79,11 @@ public class TimeTable implements DBQueryInterface, DBInterface, JSONable {
 			String sql = null;
 			String whereStr = null;
 			if(department != 0 && section != 0 && semester != 0)
-				whereStr = "where sttb_department='"+department+"' and sttb_term='"+semester+"' and sttb_section='"+section+"' order by stts_week, stts_day;";
+				whereStr = "where sttb_department='"+department+"' and sttb_term='"+semester+"' and sttb_section='"+section+"' order by stts_week, stts_day,stts_number;";
 			else if(week != 0 && teacherId != 0 && id != 0) {
-				whereStr = "where stts_week='"+week+"' and sts_teacher_id='"+teacherId+"' and sttb_id='"+id+"' order by stts_week, stts_day;";				
+				whereStr = "where stts_week='"+week+"' and sts_teacher_id='"+teacherId+"' and sttb_id='"+id+"' order by stts_week, stts_day, stts_number;";				
 			} else if(id != 0) {
-				whereStr = "where sttb_id='"+id+"' order by stts_week, stts_day;";
+				whereStr = "where sttb_id='"+id+"' order by stts_week, stts_day,stts_number;";
 			} else whereStr = "where 1";
 			 sql = "select stts_id, sts_subject_id, stb_name, sts_teacher_id, stu_fname, stu_lname, stts_number, stts_room, stts_week, stts_day, stts_subject_teacher_id "
 				+ " from st_timetable_slots "

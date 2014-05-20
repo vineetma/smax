@@ -71,7 +71,7 @@ public class Student extends Person implements DBInterface {
 	public boolean getObjectFromDatabase(Connection conn) throws ProvisionException {
 		java.sql.PreparedStatement pStmt;
 		try {
-			conn.setAutoCommit(false);
+			
 			pStmt = conn.prepareStatement("select * from st_student join st_users on st_id=stu_id where stu_email=?");
 			pStmt.setString(1, emailId);
 			ResultSet rs = pStmt.executeQuery();
@@ -87,9 +87,11 @@ public class Student extends Person implements DBInterface {
 				this.section = rs.getInt("sts_section");
 				this.semester = rs.getInt("sts_term");
 				System.out.println("Deptt: " + this.department +","+this.semester+","+this.section+"," +this.rollNo+",");
+				return true;
 			} else {
 				throw(new ProvisionException(6, "Student with this email-id does not exist"));
 			}
+			
 			
 		} catch (SQLException ex) {
 			ex.printStackTrace();
@@ -100,6 +102,7 @@ public class Student extends Person implements DBInterface {
 				e.printStackTrace();
 			}
 		}
+		
 		return false;
 		// TODO Auto-generated method stub
 
