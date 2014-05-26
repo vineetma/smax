@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.json.JSONArray;
@@ -11,7 +12,14 @@ import org.json.JSONObject;
 
 public class TimeTables implements DBQueryInterface, DBInterface, JSONable {
 	int teacherId=0;
-	int week = 0;
+	
+	protected Date startDate;
+	public Date getStartDate() {
+		return startDate;
+	}
+	public void setStartDate(Date startDate) {
+		this.startDate = startDate;
+	}
 	protected int semester;
 	public int getSemester() {
 		return semester;
@@ -29,10 +37,11 @@ public class TimeTables implements DBQueryInterface, DBInterface, JSONable {
 	protected List<TimeTable> timeTables = null;
 	public TimeTables() {
 		teacherId = 0;
-		week = 0;
+		
+		startDate=null;
 	}
-	public TimeTables (int tid, int wk){
-		teacherId = tid; week = wk;
+	public TimeTables ( Date startDate,int tid){
+		this.startDate = startDate; teacherId = tid; 
 	}
 	@Override
 	public JSONObject getJSon() {
@@ -54,8 +63,8 @@ public class TimeTables implements DBQueryInterface, DBInterface, JSONable {
 			try {
 				conn.setAutoCommit(false);
 				String whereStr = null;
-				if(week != 0 && teacherId != 0) {
-					whereStr = "where stts_week='"+week+"' and sts_teacher_id='"+teacherId+"' order by stts_week, stts_day;";				
+				if(startDate != null && teacherId != 0) {
+					whereStr = "where stts_date='"+startDate+"'and sts_teacher_id='"+teacherId+"' order by stts_week, stts_day;";				
 				}
 				String sql = "select DISTINCT sttb_id "
 					+ " from st_timetable_slots "
@@ -64,19 +73,23 @@ public class TimeTables implements DBQueryInterface, DBInterface, JSONable {
 					+ " left join st_timetable on sttb_id=stts_tt_id"
 					+ " left join st_users on sts_teacher_id=stu_id "+whereStr;
 				pStmt = conn.prepareStatement(sql);
-				if(timeTables == null) timeTables = new ArrayList<TimeTable>();
+				if(timeTables == null){ timeTables = new ArrayList<TimeTable>();
 				ResultSet rs = pStmt.executeQuery();
 				while (rs.next()) {
 					int timeTableId = rs.getInt("sttb_id");
-					TimeTable tt = new TimeTable(timeTableId, 0, 0, 0);
+					TimeTable tt = new TimeTable(startDate, timeTableId, 0, 0, 0);
 					tt.setTeacherId(teacherId);
-					tt.setWeek(week);
-				
+					
+					tt.setStartDate(startDate);
+				    
 		
 					tt.getObjectFromDatabase(conn);
 					timeTables.add(tt);
 				}
-			}catch (SQLException ex) {
+			}else {
+				throw(new ProvisionException(6, "No Timetable found"));
+			}
+				}catch (SQLException ex) {
 				ex.printStackTrace();
 				try {
 					conn.rollback();

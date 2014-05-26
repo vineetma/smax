@@ -2,6 +2,9 @@ package com.dkt.servlets;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -60,21 +63,26 @@ public class Timetable extends HttpServlet {
 				int department = Integer.parseInt(request.getParameter("department"));
 				int section = Integer.parseInt(request.getParameter("section"));
 				int semester = Integer.parseInt(request.getParameter("term"));
+				SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+				Date date = format.parse(request.getParameter("date"));
+				java.sql.Date sqlDate = new java.sql.Date(date.getTime());
 					// id is null, as we do not know the timeslot..
-			    	TimeTable stdl = new TimeTable(0, section, department, semester);
+			    	TimeTable stdl = new TimeTable( sqlDate, 0, section, department, semester);
 					stdb.readObject(stdl);
-				
+                  
 				jso.put("status", true);
 				jso.put("status_code", 0);
 				jso.put("status_message", " API success");
 				jso.put("timeSlots", stdl.getJSon());
 			}
 		} else if(request.getParameter("action").equals("myTimetable")) {
-			if(request.getParameter("week")!=null && request.getParameter("userId") != null){
+			if(request.getParameter("date")!=null && request.getParameter("userId") != null){
 				Person per = PersonFactory.getPersonFromEmail(request.getParameter("userId"));
-				
-				int week=Integer.parseInt(request.getParameter("week"));
-			TimeTables sdt2= new TimeTables(per.getId(),week);
+				SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+				Date date = format.parse(request.getParameter("date"));
+				java.sql.Date sqlDate = new java.sql.Date(date.getTime());
+			//	int week=Integer.parseInt(request.getParameter("week"));
+			TimeTables sdt2= new TimeTables(sqlDate, per.getId());
 			stdb.readObject(sdt2);
 			
 			jso.put("status", true);
@@ -92,6 +100,9 @@ public class Timetable extends HttpServlet {
 				jso.put("status", false);
 				jso.put("status_code", e.getErrorCode());
 				jso.put("status_message", e.getErrorMessage());
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 			
 			String callbackName = request.getParameter("callback");

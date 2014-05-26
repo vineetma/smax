@@ -1,5 +1,7 @@
 package com.dkt.StudentTimeTable;
 
+import java.util.Date;
+
 public class Timeslot {  
 	protected int id;
 	protected int number;
@@ -8,11 +10,18 @@ public class Timeslot {
 	protected int room;
 	protected int day;
 	protected int week;
+	protected Date slotDate;
 	
-	public Timeslot(int i, int wk, int d,int num, SubjectTeacher st, int r) {
-		this.id = i; this.number = num; this.subjectTeacher = st; this.room = r; this.day = d; this.week = wk;
+	public Date getSlotDate() {
+		return slotDate;
 	}
-	public Timeslot(int i, int wk, int d, int num, int st, int r){
+	public void setSlotDate(Date slotDate) {
+		this.slotDate = slotDate;
+	}
+	public Timeslot(Date slotDate,int i, int wk, int d,int num, SubjectTeacher st, int r) {
+		this.slotDate = slotDate; this.id = i; this.number = num; this.subjectTeacher = st; this.room = r; this.day = d; this.week = wk;
+	}
+	public Timeslot(Date slotDate,int i, int wk, int d, int num, int st, int r){
 		this.id = i; this.number = num; this.subjectTeacherId = st; this.room = r; this.day = d; this.week = wk;
 	}
 	public int getNumber() {
