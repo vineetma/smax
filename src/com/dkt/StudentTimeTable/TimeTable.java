@@ -82,7 +82,7 @@ public class TimeTable implements DBQueryInterface, DBInterface, JSONable {
 			if(department != 0 && section != 0 && semester != 0&&startDate != null)
 				whereStr = "where sttb_department='"+department+"' and sttb_term='"+semester+"' and sttb_section='"+section+"'and stts_date='"+startDate+"' order by stts_week, stts_day,stts_number;";
 			else if(startDate != null && teacherId != 0 && id != 0) {
-				whereStr = "where stts_date='"+startDate+"' and sts_teacher_id='"+teacherId+"' and sttb_id='"+id+"' order by stts_week, stts_day, stts_number;";				
+				whereStr = "where stts_date='"+startDate+"' and sts_teacher_id='"+teacherId+"' and sttb_id='"+id+"' order by  stts_number;";				
 			} else if(id != 0) {
 				whereStr = "where sttb_id='"+id+"' order by stts_week, stts_day,stts_number;";
 			} else whereStr = "where 1";
